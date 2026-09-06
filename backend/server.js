@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
+const dns = require('dns');
+dns.setServers(['8.8.8.8']);
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
