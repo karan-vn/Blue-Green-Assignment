@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-blue
+  labels:
+    app: frontend
+    version: blue
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: frontend
+      version: blue
+
+  template:
+    metadata:
+      labels:
+        app: frontend
+        version: blue
+
+    spec:
+      containers:
+        - name: frontend-blue
+
+          image: bluegreen-frontend-blue:1.1
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 3100
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+
+            limits:
+              cpu: "300m"
+              memory: "256Mi"
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3100
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3100
+            initialDelaySeconds: 10
+            periodSeconds: 20
